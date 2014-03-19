@@ -37,6 +37,8 @@ OptionParser.new do |o|
   end
 end.parse!
 
+FileUtils.rm_rf(options[:destination]) if File.exists? options[:destination]
+
 Dir["#{options[:source]}/**/*.erm"].each do |source|
   filename = source[(options[:source].length + 1)..-5]
   dest = "#{options[:destination]}/#{filename}"
