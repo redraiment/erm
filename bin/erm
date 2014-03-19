@@ -46,7 +46,7 @@ Dir["#{options[:source]}/**/*.erm"].each do |source|
 
   content, data = "", {"source" => source, "destination" => dest, "filename" => filename}
   loop do
-    properties, fragment = File.read(source).split("---\n", 2)
+    properties, fragment = File.read(source).split(/---$\n?/, 2)
     properties, fragment = "", (properties || "") if fragment.nil?
     content = fragment.gsub(/<%=\s*yield\s*%>/, content)
     data = (YAML.load(properties) || {}).merge(data)
