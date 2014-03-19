@@ -1,14 +1,15 @@
-== ERM
+# erm
 
-ERM is abbreviation of Embedded Ruby Macro.
-It provides a tool like Jekyll to generate text file from templates (rather than generate HTML from Markdown).
+erm is abbreviation of Embedded Ruby Macro.
 
-== Author
+erm is a simple, static file generator perfect for text files. Think of it like Jekyll to generate any text file from templates rather than generate HTML from Markdown only.
+
+# Author
 
 Copyright 2014 Zhang, Zepeng
-mailto: redraiment@gmail.com
-http://zzp.me
+mailto: [redraiment@gmail.com](mailto:redraiment@gmail.com)
+[http://zzp.me](http://zzp.me)
 
-== License
+# License
 
-This library and all associated materials are release under the terms of version 2 of the GNU Public License (http://www.gnu.org/copyleft/gpl.html)
+see [LICENSE](https://github.com/redraiment/erm/blob/master/LICENSE)
