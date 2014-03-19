@@ -38,10 +38,11 @@ OptionParser.new do |o|
 end.parse!
 
 Dir["#{options[:source]}/**/*.erm"].each do |source|
-  dest = source.sub(/^src/, options[:destination]).sub(/\.erm$/, "")
+  filename = source[(options[:source].length + 1)..-5]
+  dest = "#{options[:destination]}/#{filename}"
   FileUtils.mkdir_p File.dirname dest
 
-  content, data = "", {}
+  content, data = "", {"source" => source, "destination" => dest, "filename" => filename}
   loop do
     properties, fragment = File.read(source).split("---\n", 2)
     properties, fragment = "", (properties || "") if fragment.nil?
