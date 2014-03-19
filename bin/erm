@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require "fileutils"
+require "optparse"
+require "erubis"
+require "yaml"
+
+options = {
+  source: "src",
+  destination: "dest",
+  layouts: "layouts",
+  plugins: "plugins"
+}
+
+OptionParser.new do |o|
+  o.banner = "Usage: erm [options]"
+  o.separator "Options"
+  o.on("-s", "--source DIR", "Source directory (defaults to ./#{options[:source]})") do |source|
+    options[:source] = source.sub(/[\/\\]$/, '')
+  end
+  o.on("-d", "--destination DIR", "Destination directory (defaults to ./#{options[:destination]})") do |destination|
+    options[:destination] = destination
+  end
+  o.on("-l", "--layouts DIR", "Layouts directory (defaults to ./#{options[:layouts]})") do |layouts|
+    options[:layouts] = layouts
+  end
+  o.on("-p", "--plugins DIR", "Plugins directory (defaults to ./#{options[:plugins]})") do |plugins|
+    options[:plugins] = plugins
+  end
+  o.on("-h", "--help", "Display help documentation") do
+    puts o
+    exit
+  end
+  o.on("-v", "--version", "Display version information") do
+    puts "1.0.0"
+    exit
+  end
+end.parse!
+
+Dir["#{options[:source]}/**/*.erm"].each do |source|
+  dest = source.sub(/^src/, options[:destination]).sub(/\.erm$/, "")
+  FileUtils.mkdir_p File.dirname dest
+
+  content, data = "", {}
+  loop do
+    properties, fragment = File.read(source).split("---\n", 2)
+    properties, fragment = "", (properties || "") if fragment.nil?
+    content = fragment.gsub(/<%=\s*yield\s*%>/, content)
+    data = (YAML.load(properties) || {}).merge(data)
+    if data.has_key? "layout"
+      name = data.delete "layout"
+      source = "#{options[:layouts]}/#{name}.erm"
+    else
+      break
+    end
+  end
+
+  puts "#{source} => #{dest}"
+  File.write dest, Erubis::Eruby.new(content).evaluate(data)
+end

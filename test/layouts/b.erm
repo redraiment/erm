@@ -1,0 +1,5 @@
+layout: a
+---
+  Enter B
+    Hello <%= @name %>
+  Exit B
