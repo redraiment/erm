@@ -12,12 +12,12 @@ Gem::Specification.new do |s|
   s.email = "redraiment@gmail.com"
   s.homepage = "https://github.com/redraiment/erm"
 
-  s.files = ["README", "LICENSE", "bin/erm"]
+  s.files = ["README.md", "LICENSE", "bin/erm"]
   s.executables = ["erm"]
   s.default_executable = "bin/erm"
 
   s.rdoc_options = ["--charset=UTF-8"]
-  s.extra_rdoc_files = %w[README LICENSE]
+  s.extra_rdoc_files = %w[LICENSE]
 
   s.add_runtime_dependency "erubis"
 end
