@@ -22,5 +22,11 @@ module Erubis
     def include(fragment, params = nil)
       render(*import("#{Erm.includes}/#{fragment}.erm", params || {}))
     end
+
+    def defn(fn, &block)
+      self.class.class_eval do
+        define_method(fn, &block)
+      end
+    end
   end
 end
