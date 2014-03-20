@@ -14,7 +14,7 @@ def import(source, params = nil)
   loop do
     properties, fragment = File.read(source).split(/---$\n?/, 2)
     properties, fragment = "", (properties || "") if fragment.nil?
-    content = fragment.gsub(/<%=\s*yield\s*%>/, content)
+    content = fragment.gsub(/<%=\s*yield\s*%>|\[=\s*yield\s*=\]/, content)
     params = (YAML.load(properties) || {}).merge(params)
     if params.has_key? "layout"
       layout = params.delete "layout"
