@@ -20,7 +20,7 @@ end
 module Erubis
   class Context
     def include(fragment, params = nil)
-      render(*import("#{Erm.includes}/#{fragment}.erm", params || {}))
+      erm "#{Erm.includes}/#{fragment}.erm", params || {}
     end
 
     def defn(fn, &block)

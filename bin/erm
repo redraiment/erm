@@ -17,7 +17,8 @@ Dir["#{Erm.source}/**/*.erm"].each do |source|
   dest = "#{Erm.destination}/#{filename}"
   FileUtils.mkdir_p File.dirname dest
 
-  content, params = import(source, "source" => source, "destination" => dest, "filename" => filename)
-  File.write dest, render(content, params)
+  File.write dest, erm(source, "source" => source,
+                               "destination" => dest,
+                               "filename" => filename)
   puts "#{source} => #{dest}" if Erm.verbose?
 end

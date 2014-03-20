@@ -1,31 +1,27 @@
 ---
-<%= include :LICENSE, author: "Zhang, Zepeng <redraiment@gmail.com>" %>
-package <%= File.dirname(@filename).gsub(/[\\\/]/, ".") %>;
+[= include :LICENSE, author: "Zhang, Zepeng <redraiment@gmail.com>" =]
+package [= File.dirname(@filename).gsub(/[\\\/]/, ".") =];
 
-<% @properties.each do |name, type|
-     if type =~ /\./
-%>
-import <%= type %>;
-<%
-       type.sub!(/.*\./, "")
-     end
-   end
-%>
+% @properties.each do |name, type|
+%   if type =~ /\./
+import [= type =];
+%      type.sub!(/.*\./, "")
+%   end
+% end
 
-public class <%= File.basename(@filename)[0..-6] %> {
-<% @properties.each do |name, type| %>
-  private <%= type %> <%= name %>;
-<% end %>
-<% @properties.each do |name, type|
-     method = name[0].upcase + name[1..-1]
-%>
+public class [= File.basename(@filename)[0..-6] =] {
+% @properties.each do |name, type|
+  private [= type =] [= name =];
+% end
+% @properties.each do |name, type|
+%   method = name[0].upcase + name[1..-1]
 
-  public <%= type %> get<%= method %>() {
-    return <%= name %>;
+  public [= type =] get[= method =]() {
+    return [= name =];
   }
 
-  public void get<%= method %>(<%= type %> <%= name %>) {
-    this.<%= name %> = <%= name %>;
+  public void get[= method =]([= type =] [= name =]) {
+    this.[= name =] = [= name =];
   }
-<% end %>
+% end
 }

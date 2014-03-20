@@ -1,6 +1,7 @@
 require "fileutils"
-require "erubis"
 require "yaml"
+
+require "erm/erb"
 
 def clean
   FileUtils.rm_rf(Erm.destination) if File.exists?(Erm.destination)
@@ -27,5 +28,9 @@ def import(source, params = nil)
 end
 
 def render(erb, params)
-  Erubis::Eruby.new(erb).evaluate(params)
+  ErmEruby.new(erb).evaluate(params)
+end
+
+def erm(source, params)
+  render(*import(source, params))
 end
