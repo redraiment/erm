@@ -6,6 +6,7 @@ require "erubis"
 require "yaml"
 
 options = {
+  clean: false,
   source: "src",
   destination: "dest",
   layouts: "layouts",
@@ -27,6 +28,9 @@ OptionParser.new do |o|
   o.on("-p", "--plugins DIR", "Plugins directory (defaults to ./#{options[:plugins]})") do |plugins|
     options[:plugins] = plugins
   end
+  o.on("-c", "--clean", "Clean destination directory before process") do
+    options[:clean] = true
+  end
   o.on("-h", "--help", "Display help documentation") do
     puts o
     exit
@@ -37,7 +41,7 @@ OptionParser.new do |o|
   end
 end.parse!
 
-FileUtils.rm_rf(options[:destination]) if File.exists? options[:destination]
+FileUtils.rm_rf(options[:destination]) if options[:clean] && File.exists? options[:destination]
 
 Dir["#{options[:source]}/**/*.erm"].each do |source|
   filename = source[(options[:source].length + 1)..-5]
