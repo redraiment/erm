@@ -5,18 +5,18 @@ $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 require "fileutils"
 require "erm"
 
-unless File.exists? @options['source']
-  $stderr.puts "Source directory (#{@options['source']}) does not exist."
+unless File.exists? Erm.source
+  $stderr.puts "Source directory (#{Erm.source}) does not exist."
   $stderr.puts "Try `erm --help' for more information."
   exit 1
 end
 
-Dir["#{@options['source']}/**/*.erm"].each do |source|
-  filename = source[(@options['source'].length + 1)..-5]
-  dest = "#{@options['destination']}/#{filename}"
+Dir["#{Erm.source}/**/*.erm"].each do |source|
+  filename = source[(Erm.source.length + 1)..-5]
+  dest = "#{Erm.destination}/#{filename}"
   FileUtils.mkdir_p File.dirname dest
 
   content, params = import(source, "source" => source, "destination" => dest, "filename" => filename)
   File.write dest, render(content, params)
-  puts "#{source} => #{dest}" if @options["verbose"]
+  puts "#{source} => #{dest}" if Erm.verbose?
 end

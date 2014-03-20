@@ -1,6 +1,8 @@
 require "optparse"
 require "yaml"
 
+require "erm/version"
+
 module Erm
   CONFIG_FILE = "config.yml"
 
@@ -11,7 +13,7 @@ module Erm
       "source" => "src",
       "destination" => "dest",
       "layouts" => "layouts",
-      "plugins" => "plugins"
+      "includes" => "includes"
     }
   end
 
@@ -33,8 +35,8 @@ module Erm
       o.on("-l", "--layouts DIR", "Layouts directory (defaults to ./#{defaults['layouts']})") do |layouts|
         @cmd_options['layouts'] = layouts
       end
-      o.on("-p", "--plugins DIR", "Plugins directory (defaults to ./#{defaults['plugins']})") do |plugins|
-        @cmd_options['plugins'] = plugins
+      o.on("-i", "--includes DIR", "Includes directory (defaults to ./#{defaults['includes']})") do |includes|
+        @cmd_options['includes'] = includes
       end
       o.on("-c", "--clean", "Clean destination directory before process") do
         @cmd_options['clean'] = true

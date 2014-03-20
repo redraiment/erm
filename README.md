@@ -6,9 +6,9 @@ erm is a simple, static file generator perfect for text files. Think of it like 
 
 # Author
 
-Copyright 2014 Zhang, Zepeng
-mailto: [redraiment@gmail.com](mailto:redraiment@gmail.com)
-[http://zzp.me](http://zzp.me)
+* Copyright 2014 Zhang, Zepeng
+* mailto: [redraiment@gmail.com](mailto:redraiment@gmail.com)
+* [http://zzp.me](http://zzp.me)
 
 # License
 
