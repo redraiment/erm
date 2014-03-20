@@ -1,6 +1,6 @@
 require "rubygems"
 
-$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+$:.unshift File.join(File.dirname(__FILE__), "lib")
 require "erm/version"
 
 Gem::Specification.new do |s|
