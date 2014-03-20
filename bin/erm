@@ -13,7 +13,7 @@ options = {
   plugins: "plugins"
 }
 
-OptionParser.new do |o|
+help = OptionParser.new do |o|
   o.banner = "Usage: erm [options]"
   o.separator "Options"
   o.on("-s", "--source DIR", "Source directory (defaults to ./#{options[:source]})") do |source|
@@ -39,9 +39,15 @@ OptionParser.new do |o|
     puts "1.0.0"
     exit
   end
-end.parse!
+end
+help.parse!
 
-FileUtils.rm_rf(options[:destination]) if options[:clean] && File.exists? options[:destination]
+unless File.exists? options[:source]
+  puts help
+  exit 1
+end
+
+FileUtils.rm_rf(options[:destination]) if options[:clean] && File.exists?(options[:destination])
 
 Dir["#{options[:source]}/**/*.erm"].each do |source|
   filename = source[(options[:source].length + 1)..-5]
