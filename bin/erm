@@ -6,30 +6,33 @@ require "erubis"
 require "yaml"
 
 options = {
-  clean: false,
-  source: "src",
-  destination: "dest",
-  layouts: "layouts",
-  plugins: "plugins"
+  "clean" => false,
+  "source" => "src",
+  "destination" => "dest",
+  "layouts" => "layouts",
+  "plugins" => "plugins"
 }
+
+CONFIG_FILE = "config.yml"
+options.merge!(YAML.load(File.read(CONFIG_FILE))) if File.exists? CONFIG_FILE
 
 help = OptionParser.new do |o|
   o.banner = "Usage: erm [options]"
   o.separator "Options"
-  o.on("-s", "--source DIR", "Source directory (defaults to ./#{options[:source]})") do |source|
-    options[:source] = source.sub(/[\/\\]$/, '')
+  o.on("-s", "--source DIR", "Source directory (defaults to ./#{options['source']})") do |source|
+    options['source'] = source.sub(/[\/\\]$/, '')
   end
-  o.on("-d", "--destination DIR", "Destination directory (defaults to ./#{options[:destination]})") do |destination|
-    options[:destination] = destination
+  o.on("-d", "--destination DIR", "Destination directory (defaults to ./#{options['destination']})") do |destination|
+    options['destination'] = destination
   end
-  o.on("-l", "--layouts DIR", "Layouts directory (defaults to ./#{options[:layouts]})") do |layouts|
-    options[:layouts] = layouts
+  o.on("-l", "--layouts DIR", "Layouts directory (defaults to ./#{options['layouts']})") do |layouts|
+    options['layouts'] = layouts
   end
-  o.on("-p", "--plugins DIR", "Plugins directory (defaults to ./#{options[:plugins]})") do |plugins|
-    options[:plugins] = plugins
+  o.on("-p", "--plugins DIR", "Plugins directory (defaults to ./#{options['plugins']})") do |plugins|
+    options['plugins'] = plugins
   end
   o.on("-c", "--clean", "Clean destination directory before process") do
-    options[:clean] = true
+    options['clean'] = true
   end
   o.on("-h", "--help", "Display help documentation") do
     puts o
@@ -42,16 +45,16 @@ help = OptionParser.new do |o|
 end
 help.parse!
 
-unless File.exists? options[:source]
+unless File.exists? options['source']
   puts help
   exit 1
 end
 
-FileUtils.rm_rf(options[:destination]) if options[:clean] && File.exists?(options[:destination])
+FileUtils.rm_rf(options['destination']) if options['clean'] && File.exists?(options['destination'])
 
-Dir["#{options[:source]}/**/*.erm"].each do |source|
-  filename = source[(options[:source].length + 1)..-5]
-  dest = "#{options[:destination]}/#{filename}"
+Dir["#{options['source']}/**/*.erm"].each do |source|
+  filename = source[(options['source'].length + 1)..-5]
+  dest = "#{options['destination']}/#{filename}"
   FileUtils.mkdir_p File.dirname dest
 
   content, data = "", {"source" => source, "destination" => dest, "filename" => filename}
@@ -62,7 +65,7 @@ Dir["#{options[:source]}/**/*.erm"].each do |source|
     data = (YAML.load(properties) || {}).merge(data)
     if data.has_key? "layout"
       name = data.delete "layout"
-      source = "#{options[:layouts]}/#{name}.erm"
+      source = "#{options['layouts']}/#{name}.erm"
     else
       break
     end
