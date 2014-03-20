@@ -1,3 +1,4 @@
 /**
- * Copyright 2014 Zhang, Zepeng
+ * @author <%= @author %>
+ * Copyright 2014-<%= Time.now.year %>
  */

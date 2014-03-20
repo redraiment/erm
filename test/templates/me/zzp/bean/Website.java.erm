@@ -1,0 +1,6 @@
+layout: bean
+properties:
+  name: String
+  owner: User
+  url: java.net.URL
+---
