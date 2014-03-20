@@ -1,8 +1,11 @@
 require "rubygems"
 
+$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+require "erm/version"
+
 Gem::Specification.new do |s|
   s.name = "erm"
-  s.version = "1.0.0"
+  s.version = Erm::VERSION
   s.license = "MIT"
 
   s.summary = "Generate text file from templates."
