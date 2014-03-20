@@ -7,6 +7,7 @@ require "yaml"
 
 options = {
   "clean" => false,
+  "verbose" => false,
   "source" => "src",
   "destination" => "dest",
   "layouts" => "layouts",
@@ -33,6 +34,9 @@ help = OptionParser.new do |o|
   end
   o.on("-c", "--clean", "Clean destination directory before process") do
     options['clean'] = true
+  end
+  o.on("-t", "--verbose", "Have erm give more verbose output") do
+    options['verbose'] = true
   end
   o.on("-h", "--help", "Display help documentation") do
     puts o
@@ -71,6 +75,6 @@ Dir["#{options['source']}/**/*.erm"].each do |source|
     end
   end
 
-  puts "#{source} => #{dest}"
+  puts "#{source} => #{dest}" if options["verbose"]
   File.write dest, Erubis::Eruby.new(content).evaluate(data)
 end
