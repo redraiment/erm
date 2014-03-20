@@ -3,7 +3,7 @@ require "erubis"
 require "yaml"
 
 def clean
-  FileUtils.rm_rf(Erm.destination) if Erm.clean? && File.exists?(Erm.destination)
+  FileUtils.rm_rf(Erm.destination) if File.exists?(Erm.destination)
 end
 
 def import(source, params = nil)

@@ -11,6 +11,7 @@ unless File.exists? Erm.source
   exit 1
 end
 
+clean if Erm.clean?
 Dir["#{Erm.source}/**/*.erm"].each do |source|
   filename = source[(Erm.source.length + 1)..-5]
   dest = "#{Erm.destination}/#{filename}"
