@@ -1,0 +1,5 @@
+layout: nested-layout-root
+---
+  Level 2 in
+    Hello <%= @name %>
+  Level 2 ou

@@ -1,82 +1,22 @@
 #!/usr/bin/env ruby
 
+$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+
 require "fileutils"
-require "optparse"
-require "erubis"
-require "yaml"
+require "erm"
 
-ERM_VERSION = "1.0.0"
-
-options = {
-  "clean" => false,
-  "verbose" => false,
-  "source" => "src",
-  "destination" => "dest",
-  "layouts" => "layouts",
-  "plugins" => "plugins"
-}
-
-CONFIG_FILE = "config.yml"
-options.merge!(YAML.load(File.read(CONFIG_FILE))) if File.exists? CONFIG_FILE
-
-help = OptionParser.new do |o|
-  o.banner = "Usage: erm [options]"
-  o.separator "Options"
-  o.on("-s", "--source DIR", "Source directory (defaults to ./#{options['source']})") do |source|
-    options['source'] = source.sub(/[\/\\]$/, '')
-  end
-  o.on("-d", "--destination DIR", "Destination directory (defaults to ./#{options['destination']})") do |destination|
-    options['destination'] = destination
-  end
-  o.on("-l", "--layouts DIR", "Layouts directory (defaults to ./#{options['layouts']})") do |layouts|
-    options['layouts'] = layouts
-  end
-  o.on("-p", "--plugins DIR", "Plugins directory (defaults to ./#{options['plugins']})") do |plugins|
-    options['plugins'] = plugins
-  end
-  o.on("-c", "--clean", "Clean destination directory before process") do
-    options['clean'] = true
-  end
-  o.on("-t", "--verbose", "Have erm give more verbose output") do
-    options['verbose'] = true
-  end
-  o.on("-h", "--help", "Display help documentation") do
-    puts o
-    exit
-  end
-  o.on("-v", "--version", "Display version information") do
-    puts ERM_VERSION
-    exit
-  end
-end
-help.parse!
-
-unless File.exists? options['source']
-  puts help
+unless File.exists? @options['source']
+  $stderr.puts "Source directory (#{@options['source']}) does not exist."
+  $stderr.puts "Try `erm --help' for more information."
   exit 1
 end
 
-FileUtils.rm_rf(options['destination']) if options['clean'] && File.exists?(options['destination'])
-
-Dir["#{options['source']}/**/*.erm"].each do |source|
-  filename = source[(options['source'].length + 1)..-5]
-  dest = "#{options['destination']}/#{filename}"
+Dir["#{@options['source']}/**/*.erm"].each do |source|
+  filename = source[(@options['source'].length + 1)..-5]
+  dest = "#{@options['destination']}/#{filename}"
   FileUtils.mkdir_p File.dirname dest
 
-  content, data = "", {"source" => source, "destination" => dest, "filename" => filename}
-  loop do
-    properties, fragment = File.read(source).split(/---$\n?/, 2)
-    properties, fragment = "", (properties || "") if fragment.nil?
-    content = fragment.gsub(/<%=\s*yield\s*%>/, content)
-    data = (YAML.load(properties) || {}).merge(data)
-    if data.has_key? "layout"
-      name = data.delete "layout"
-      source = "#{options['layouts']}/#{name}.erm"
-    else
-      break
-    end
-  end
-
-  puts "#{source} => #{dest}" if options["verbose"]
-  File.write dest, Erubis::Eruby.new(content).evaluate(data)
+  content, params = import(source, "source" => source, "destination" => dest, "filename" => filename)
+  File.write dest, render(content, params)
+  puts "#{source} => #{dest}" if @options["verbose"]
 end

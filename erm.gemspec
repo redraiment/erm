@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = "redraiment@gmail.com"
   s.homepage = "https://github.com/redraiment/erm"
 
-  s.files = ["README.md", "LICENSE", "bin/erm"]
+  s.files = ["README.md", "LICENSE", "bin/erm"] + Dir["lib/**/*.rb"]
   s.executables = ["erm"]
   s.default_executable = "bin/erm"
 

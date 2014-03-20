@@ -1,4 +1,0 @@
----
-Enter A
-<%= yield %>
-Exit A
