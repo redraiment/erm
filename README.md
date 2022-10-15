@@ -1,3 +1,11 @@
+# Obsolete Repository
+
+This repository is obsolete.
+
+erm is now integrated in the [JSSP](https://github.com/redraiment/jssp) repository.
+
+Please open new issues or pull requests directly in the [JSSP](https://github.com/redraiment/jssp) repository. Existing issues and pull requests can stay on this repository. We will migrate them as necessary before merging.
+
 # erm
 
 erm is abbreviation of Embedded Ruby Macro.
